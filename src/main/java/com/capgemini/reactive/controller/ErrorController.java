@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
+import java.time.Duration;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -41,7 +43,8 @@ public class ErrorController {
     //  exception in case of some status and apply retry only on such exception.
     @GetMapping("/handler2")
     public Mono<Product> handler2() {
-        return errorService.callErrorEndpoint();
+        return errorService.callErrorEndpoint()
+                .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(1)));
     }
 
 }

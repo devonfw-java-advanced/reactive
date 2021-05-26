@@ -35,6 +35,9 @@ public class ProductController {
     //  To gather data please invoke endpoint prepared above ( via HTTP call). To do so please implement service methods appropriately.
     @GetMapping("/products")
     public Flux<Product> products() {
-        return null;
+        Flux<Product> favourites = productService.getFavourites();
+        Flux<Product> propositions = productService.getPropositions();
+
+        return favourites.mergeWith(propositions);
     }
 }
