@@ -1,11 +1,10 @@
 package com.capgemini.reactive.service;
 
-import com.capgemini.reactive.to.City;
-import com.capgemini.reactive.to.CityDetails;
+import com.capgemini.reactive.to.CityResult;
+import com.capgemini.reactive.to.Forecast;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -14,11 +13,13 @@ public class WeatherService {
 
     private final WebClient weatherWebClient;
 
-    public Flux<City> searchCities(String name) {
+    private final WebClient geoWebClient;
+
+    public Mono<CityResult> searchCities(String name) {
         return null;
     }
 
-    public Mono<CityDetails> getWeatherDetails(City city) {
+    public Mono<Forecast> getForecast(CityResult.City city) {
         return null;
     }
 }
