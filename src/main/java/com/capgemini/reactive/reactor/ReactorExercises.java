@@ -15,7 +15,7 @@ public class ReactorExercises {
     }
 
     // TODO Create a Flux that produce values from 0 to 4 every 1 second.
-    // Do not create Flux earlier in test but in Supplier itself;
+    //  Do not create Flux earlier in test but in Supplier itself;
     Supplier<Flux<Long>> countingFlux() {
         return () -> Flux
                 .interval(Duration.ofSeconds(1))

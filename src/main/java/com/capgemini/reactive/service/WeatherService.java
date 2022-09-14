@@ -1,11 +1,10 @@
 package com.capgemini.reactive.service;
 
-import com.capgemini.reactive.to.City;
-import com.capgemini.reactive.to.CityDetails;
+import com.capgemini.reactive.to.CityResult;
+import com.capgemini.reactive.to.Forecast;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -14,24 +13,30 @@ public class WeatherService {
 
     private final WebClient weatherWebClient;
 
-    public Flux<City> searchCities(String name) {
-        return weatherWebClient.get()
+    private final WebClient geoWebClient;
+
+    public Mono<CityResult> searchCities(String name) {
+        return geoWebClient.get()
                 .uri(uriBuilder ->
                         uriBuilder
-                            .path("/location/search/")
-                                .queryParam("query", name)
+                                .path("/search")
+                                .queryParam("name", name)
+                                .queryParam("count", 1)
                                 .build())
                 .retrieve()
-                .bodyToFlux(City.class);
+                .bodyToMono(CityResult.class);
     }
 
-    public Mono<CityDetails> getWeatherDetails(City city) {
+    public Mono<Forecast> getForecast(CityResult.City city) {
         return weatherWebClient.get()
                 .uri(uriBuilder ->
                         uriBuilder
-                                .path("/location/{woeid}/")
-                                .build(city.getWoeid()))
+                                .path("/forecast")
+                                .queryParam("latitude", city.getLatitude())
+                                .queryParam("longitude", city.getLongitude())
+                                .queryParam("current_weather", true)
+                                .build())
                 .retrieve()
-                .bodyToMono(CityDetails.class);
+                .bodyToMono(Forecast.class);
     }
 }
