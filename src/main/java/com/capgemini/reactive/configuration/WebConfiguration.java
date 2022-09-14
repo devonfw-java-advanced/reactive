@@ -12,9 +12,6 @@ public class WebConfiguration {
     @Bean
     public WebClient weatherWebClient() {
         return WebClient.builder()
-                .clientConnector(new ReactorClientHttpConnector(
-                        HttpClient.create().wiretap(true)
-                ))
                 .baseUrl("https://api.open-meteo.com/v1/")
                 .build();
     }
@@ -22,9 +19,6 @@ public class WebConfiguration {
     @Bean
     public WebClient geoWebClient() {
         return WebClient.builder()
-                .clientConnector(new ReactorClientHttpConnector(
-                        HttpClient.create().wiretap(true)
-                ))
                 .baseUrl("https://geocoding-api.open-meteo.com/v1/")
                 .build();
     }
